@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <title>TODO supply a title</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+    <script>
+
+      //Sets the header on the new person window to reflect whether we are adding a new or editing an existing person
+      function setIsAdding(val) {
+        val === true ? $("#header").html("Add Person") : $("#header").html("Edit Person");
+      }
+
+      // true if we are adding, false if editing
+      function isAdding() {
+        return $("#header").html() === "Add Person";
+      }
+
+      function setUpHandlers() {
+        $(".btnedit").off("click");
+        $(".btnedit").click(editPerson);
+
+        $(".btndelete").off("click");
+        $(".btndelete").click(function (evt) {
+          var id = $(this).data("personid");
+          (this).closest("tr").remove();
+          deletePerson(id);
+        });
+      }
+
+      function makeRow(person) {
+        var row = "<tr id='" + person.id + "'><td>" + person.id + "</td><td>" + person.fName + "</td><td>" + person.lName + "</td><td>" + person.phone;
+        row += "</td><td><a href='#' class='btndelete' data-personid='" + person.id + "'>delete</a> / ";
+        "<a href='#' class='btnedit' data-personid='" + person.id;
+        row += "<a href='#' class='btnedit' data-toggle='modal' data-target='#myModal' data-person='" + JSON.stringify(person) + "'>edit</a></td></tr>";
+        return row;
+      }
+
+      function initAddEditFields(fname, lname, phone, id) {
+        $("#fname").val(fname);
+        $("#lname").val(lname);
+        $("#phone").val(phone);
+        $("#id").val(id);
+      }
+
+      function deletePerson(id) {
+        $.ajax({
+          url: "api/person/" + id,
+          method: "DELETE"
+        }).done(function (deletedPerson) {
+          alert("Person with id: " + deletedPerson.id + " was deleted");
+        }).fail(function (jqXHR, textStatus, errorThrown) {
+          $("#error").html(textStatus + ", " + errorThrown).show();
+        });
+      }
+
+      function editPerson() {
+        var p = $(this).data("person");
+        initAddEditFields(p.fName, p.lName, p.phone, p.id);
+        setIsAdding(false);
+      }
+
+      function savePerson() {
+        var type = "POST";
+        var data = {fName: $("#fname").val(), lName: $("#lname").val(), phone: $("#phone").val()};
+        if (!isAdding()) {
+          type = "PUT";
+          data.id = $("#id").val();
+        }
+        $.ajax({
+          url: "api/person",
+          type: type,
+          contentType: "application/json; charset=utf-8",
+          dataType: "json",
+          data: JSON.stringify(data)
+        }).done(function (added) {
+          initAddEditFields("", "", "", null);
+          if (isAdding()) {
+            $("#tbody").append(makeRow(added));
+          }
+          else {
+            $("#" + data.id).replaceWith(makeRow(added));
+          }
+          setUpHandlers();
+          setIsAdding(true);
+        }).fail(function (jqXHR, textStatus, errorThrown) {
+          $("#error").html(textStatus + ", " + errorThrown).show();
+          setIsAdding(true);
+        });
+      }
+
+      function getData() {
+        $("#error").html("").hide();
+        $("#tbody").html("");
+        $.ajax({
+          url: "api/person"
+        }).done(function (result) {
+          result.forEach(function (person) {
+            $("#tbody").append(makeRow(person));
+          });
+          setUpHandlers()
+
+        }).fail(function (jqXHR, textStatus, errorThrown) {
+          $("#error").html(textStatus + ", " + errorThrown).show();
+        });
+      }
+
+      $(document).ready(function () {
+        getData();
+        $("#reload").click(getData);
+        $("#savebtn").click(savePerson);
+        setIsAdding(true);
+      }
+      );
+    </script>
+  </head>
+  <body>
+    <h2>All Persons</h2>
+    <table class="table" style="width: 50%">
+      <thead>
+        <tr><td>ID</td><td>First Name</td><td>Last name</td><td>Phone</td></tr>
+      </thead>
+      <tbody id="tbody"></tbody>
+    </table>
+    <button id="reload" class="btn btn-default">Reload Data</button>
+    <button type="button" class="btn btn-primary btn-primary" data-toggle="modal" data-target="#myModal">
+      Add New Person
+    </button>
+    <div id="error" class="alert alert-danger" role="alert" style="width: 50%"></div>
+
+    <!-- Modal -->
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div id="header" class="modal-header">
+
+          </div>
+          <div class="modal-body">
+            <input type="hidden"  id="id">
+            <div class="form-group">
+              <label for="fname">First Name</label>
+              <input type="text" class="form-control" id="fname">
+            </div>
+            <div class="form-group">
+              <label for="email">Last Name</label>
+              <input type="text" class="form-control" name="lname" id="lname">
+            </div>
+            <div class="form-group">
+              <label for="phone">phone</label>
+              <input type="text" class="form-control" name="phone" id="phone">
+            </div>
+
+            <!-- Allow form submission with keyboard without duplicating the dialog button -->
+            <input type="submit" tabindex="-1" style="position:absolute; top:-1000px">
+
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+            <button type="button" id="savebtn" class="btn btn-primary" data-dismiss="modal">Save changes</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+
+
+</html>

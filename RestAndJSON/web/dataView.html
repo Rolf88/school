@@ -1,0 +1,25 @@
+<div class="col-md-9" ng-controller="dataViewCtrl as ctrl">
+    <table class="table">
+        <thead>
+            <tr>
+                <td>First Name:</td>
+                <td>Last Name:</td>
+                <td>Street:</td>
+                <td>City:</td>
+            </tr>
+        </thead>
+        <tbody>
+            <tr  ng-repeat="data in ctrl.testDatas">
+                <td>{{data.fname}}</td>
+                <td>{{data.lname}}</td>
+                <td>{{data.street}}</td>
+                <td>{{data.city}}</td>
+            </tr>
+        </tbody>
+    </table>
+    <form class="form-inline" ng-submit="ctrl.searchData()">
+        <div class="col-md-1">
+            <br><input class="btn btn-default" type="submit" value="Search">
+        </div>
+    </form>
+</div>

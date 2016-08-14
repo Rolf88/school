@@ -1,0 +1,16 @@
+<h1>LoginForm:</h1>
+<form class="well left" role="form" ng-show="!ctrl.isAuthenticated" ng-submit="ctrl.login()">
+    <div class="form-group">
+        <input type="text" style="width:10em;" placeholder="username" class="form-control"
+               ng-model="ctrl.user.firstName">
+    </div>
+    <div class="form-group">
+        <input type="password" style="width:10em;" placeholder="password" class="form-control"
+               ng-model="ctrl.user.lastName">
+    </div>
+    <button type="submit" class="btn btn-success">Login</button>
+</form>
+<div class="alert-danger left" ng-show="!ctrl.goneWrong">{{ctrl.error}}</div>
+<div ng-show="ctrl.isAuthenticated">
+    <p class="well left">Logged on as: {{ctrl.person.firstName}}</p>
+</div>

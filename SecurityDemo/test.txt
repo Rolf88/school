@@ -1,0 +1,3 @@
+First line - we return this one
+Second line - we leave it alone
+No third line...

@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<diagram program="umlet" version="13.3">
+  <zoom_level>10</zoom_level>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>330</x>
+      <y>190</y>
+      <w>210</w>
+      <h>120</h>
+    </coordinates>
+    <panel_attributes>template=T: Object
+&lt;&lt;interface&gt;&gt;
+*Path*
+--
+--
+getFirst(): T
+getRest(): Path&lt;T&gt;
+isEmpty(): boolean</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>430</x>
+      <y>350</y>
+      <w>270</w>
+      <h>270</h>
+    </coordinates>
+    <panel_attributes>template=T:Object
+*LinkedPath*
+--
+first: T
+rest: Path&lt;T&gt;
+--
+getFirst(): T
+getRest(): Path&lt;T&gt;
+isEmpty(): boolean = false
+iterator(): PathIterator&lt;T&gt;
+
+{innerclass
+*PathIterator&lt;T&gt;*
+--
+path: Path&lt;T&gt;
+--
+PathIterator(path: Path&lt;T&gt;)
+hasNext(): boolean
+next(): T
+innerclass}</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>460</x>
+      <y>300</y>
+      <w>30</w>
+      <h>80</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;.</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;60.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>220</x>
+      <y>60</y>
+      <w>210</w>
+      <h>90</h>
+    </coordinates>
+    <panel_attributes>template=T: Object
+&lt;&lt;interface&gt;&gt;
+*Iterable*
+--
+--
+iterator(): Iterator&lt;T&gt;</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>350</x>
+      <y>140</y>
+      <w>30</w>
+      <h>80</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;60.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>490</x>
+      <y>60</y>
+      <w>210</w>
+      <h>100</h>
+    </coordinates>
+    <panel_attributes>template=T: Object
+&lt;&lt;interface&gt;&gt;
+*Iterator*
+--
+--
+hasNext(): boolean
+next(): T</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>380</x>
+      <y>130</y>
+      <w>130</w>
+      <h>30</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;.</panel_attributes>
+    <additional_attributes>110.0;10.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>610</x>
+      <y>150</y>
+      <w>30</w>
+      <h>380</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;.</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;360.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>200</x>
+      <y>360</y>
+      <w>200</w>
+      <h>130</h>
+    </coordinates>
+    <panel_attributes>*EmptyPath*
+--
+--
+/getFirst(): Unsupported/
+/getRest(): Unsupported/
+isEmpty(): boolean = true
+iterator(): Iterator =
+   Collections.emptyIterator</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>350</x>
+      <y>300</y>
+      <w>30</w>
+      <h>80</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;.</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;60.0</additional_attributes>
+  </element>
+</diagram>

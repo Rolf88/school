@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+  <meta charset="UTF-8">
+  <link rel="stylesheet" href="style/style.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.5//angular.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.5//angular-route.js"></script>
+  <script src="app.js"></script>
+  <title></title>
+</head>
+<!--show-->
+<body ng-app="viewApp">
+<div  style="font-size: large">
+  <ul class="menu">
+    <li><a href="#/home">Home</a></li>
+    <li><a href="#/products">Products</a></li>
+    <li><a href="#/company">Company</a></li>
+    <li><a href="#/blog">Blog</a></li>
+  </ul>
+  <div style="margin: 5px;border: solid #006666; min-width: 400px;min-height: 300px;">
+     <!--This is were templates will be inserted-->
+     <div ng-view="ng-view"></div>
+  </div>
+  <!--/show-->
+  <div style="max-width: 400px;float: left;margin-top:20px;"> Our views is included in an element marked with the <b style="font-size: x-large">ng-view</b> directive</div>
+  <div style="float:left;margin-top: -10px;">  <img src="images/GreenArrow.png" style="width: 100px;float:left"></div>
+</div>
+
+</body>
+<!--</html>-->

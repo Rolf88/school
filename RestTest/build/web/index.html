@@ -1,0 +1,65 @@
+<html>
+    <head>
+        <title>TODO supply a title</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <script src="http://code.jquery.com/jquery-1.11.3.min.js"></script>
+        <script>
+            $(document).ready(function () {
+                $("#getbtn").click(function () {
+                    $.ajax({
+                        type: "GET",
+                        url: "api/quote/random"
+                    }).done(function (ranQuotes) {
+                        $("#thequote").val(ranQuotes.quote);
+                    }).fail(function () {
+                        alert("Fejl1");
+                    });
+                });
+
+                $.ajax({
+                    type: "GET",
+                    url: "api/quote/random"
+                }).done(function (dataFromServer) {
+                    $("#thequote").val(dataFromServer.quote);
+                }).fail(function () {
+                    alert("Fejl2");
+                });
+
+                $("#makequote").click(function () {
+                    $.ajax({
+                        type: "POST",
+                        url: "api/quote/",
+                        data: JSON.stringify({quote: $("#quote").val()})
+                    });
+                });
+
+                $("#deletequote").click(function () {
+                    $.ajax({
+                        type: "DELETE",
+                        url: "api/quote/" + $("#quoteid").val()
+                    });
+                });
+            });
+        </script>
+    </head>
+    <body>
+        <h2>Quote Editor</h2>
+        <div>
+            <button id="getbtn">Get Random Quote</button>
+        </div>
+        <div>
+            <input id="thequote" style="width: 60em; margin-top: 1em;">
+        </div>
+        <div>Make a new quote: </div>
+        <form id="myForm" name="myForm" method="POST">
+            <input type="text" id="quote" placeholder="enter the quote">
+            <input id="makequote" type="submit" value="Submit Quote" name="makequotebutton" />
+        </form>
+        <div>Delete a quote: </div>
+        <form id="myForm1" name="myForm" method="POST">
+            <input type="text" id="quoteid" placeholder="enter the quote id">
+            <input id="deletequote" type="submit" value="Delete Quote" name="makequotebutton" />
+        </form>
+    </body>
+</html>

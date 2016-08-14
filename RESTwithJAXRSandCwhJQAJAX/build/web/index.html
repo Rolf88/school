@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html>
+    <head>
+        <title>TODO supply a title</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+        <script src="http://code.jquery.com/jquery-1.11.3.min.js"></script>
+        <script>
+            $(document).ready(function () {
+                $("#myform").submit(function (e) {
+                    $.ajax({
+                        method: "POST",
+                        contentType: "application/json",
+                        url: "api/person/",
+                        data: JSON.stringify({fName: $("#fnameinput").val(), lName: $("#lnameinput").val(), phone: $("#phoneinput").val()})
+
+                    });
+                    e.preventDefault();
+                });
+
+                $("#refreshbtn").click(function () {
+                    $.ajax({
+                        type: "GET",
+                        url: "api/person"
+                    }).done(function (dataFromServer) {
+                        var personRows = dataFromServer.map(function (person) {
+                            return Utils.fillInTable(person);
+                        });
+                        $("#persontable tbody").html(personRows);
+                    }).fail(function () {
+                        alert("Fejl2");
+                    });
+                });
+
+                $.ajax({
+                    type: "GET",
+                    url: "api/person"
+                }).done(function (dataFromServer) {
+                    var personRows = dataFromServer.map(function (person) {
+                        return Utils.fillInTable(person);
+                    });
+                    $("#persontable tbody").html(personRows);
+                }).fail(function () {
+                    alert("Fejl2");
+                });
+
+                $("#persontable").on("click", "a[href='#delete']", function (e) {
+                    var $this = $(this),
+                    $container = $this.parents("tr").first(),
+                    personid = $container.data("id");
+                    
+                    $.ajax({
+                        method: "DELETE",
+                        contentType: "application/json",
+                        url: "api/person/" + personid
+                    });
+
+                    e.preventDefault();
+                });
+            });
+
+            var Utils = {
+                fillInTable: function (person) {
+
+                    return $(document.createElement("tr"))
+                            .data({id: person.id})
+                            .append($(document.createElement("td")).text(person.id))
+                            .append($(document.createElement("td")).text(person.fName))
+                            .append($(document.createElement("td")).text(person.lName))
+                            .append($(document.createElement("td")).text(person.phone))
+                            .append(
+                                    $(document.createElement("td")).append(
+                                    $(document.createElement("a")).attr({href: "#delete"}).text("delete"))
+                                    )
+                            .append($(document.createElement("td")).append($(document.createElement("a")).attr({href: "#update"}).text("edit"))
+                                    );
+                }
+            };
+        </script>
+    </head>
+    <body>
+        <table class="table" id="persontable">
+            <thead>
+                <tr>
+                    <th>Id</th>
+                    <th>First Name</th>
+                    <th>Last Name</th>
+                    <th>Phone</th>
+                </tr>
+            </thead>
+            <tbody>
+            </tbody>
+        </table>
+        <button id="refreshbtn">RefreshTable</button>
+        <div>Make a new person: </div>
+        <form id="myform" name="myForm" method="POST">
+            <input type="text" id="fnameinput" placeholder="enter first name">
+            <input type="text" id="lnameinput" placeholder="enter last name">
+            <input type="text" id="phoneinput" placeholder="enter phone number">
+            <input id="makeperson" type="submit" value="Submit Person" name="makepersonbutton" />
+        </form>
+    </body>
+</html>

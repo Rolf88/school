@@ -1,0 +1,15 @@
+@startuml
+hide footbox
+Client -> File: read
+activate File
+File -> SecurityManager: checkRead(FileDescriptor)
+group permissions OK?
+SecurityManager -> SecurityManager: checkPermissions
+SecurityManager -> AccessController: checkPermissions
+File --> Client: return
+else SecurityException
+AccessController --> Client: SecurityException
+end
+deactivate File
+
+@enduml
